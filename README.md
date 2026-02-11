@@ -19,8 +19,8 @@ This module utilizes [PsychroLib](https://github.com/psychrometrics/psychrolib) 
 ## Supported Devices
 
 - Tempest
-- Air (untested)
-- Sky (untested)
+- Air
+- Sky
 
 ## Usage
 
