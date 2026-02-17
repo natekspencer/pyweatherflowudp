@@ -1,43 +1,54 @@
 [project]
 name = "pyweatherflowudp"
 description = "An event-based asynchronous library to read UDP packets from Weatherflow weather systems on a local network without any reliance on the cloud."
-license = "MIT"
-readme = "README.md"
+authors = [{ name = "Nathan Spencer", email = "natekspencer@gmail.com" }]
 requires-python = ">=3.10"
-authors = [
-    { name = "Nathan Spencer", email = "natekspencer@gmail.com" }
+readme = "README.md"
+license = "MIT"
+keywords = [
+    "WeatherFlow",
+    "UDP",
+    "asynchronous",
+    "local",
 ]
-keywords = ["WeatherFlow", "UDP", "asynchronous", "local"]
 dependencies = [
     "Pint>=0.24",
-    "PsychroLib>=2.5.0"
+    "PsychroLib>=2.5.0",
 ]
-dynamic = [ "version" ]
+dynamic = ["version"]
 
 [project.urls]
 homepage = "https://github.com/natekspencer/pyweatherflowudp"
 repository = "https://github.com/natekspencer/pyweatherflowudp"
 
-[tool.poetry]
-version = "0.0.0"
-include = ["pyweatherflowudp/py.typed"]
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.19.1"
-pre-commit = "^4.5.1"
-pytest = "^9.0.2"
-pytest-asyncio = "^1.3.0"
-pytest-cov = "^7.0.0"
-pytest-timeout = "^2.4.0"
-ruff = "^0.15"
-tox = "^4.34.1"
-
-[tool.poetry-dynamic-versioning]
-enable = true
-vcs = "git"
-style = "semver"
-pattern = "default-unprefixed"
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1,<2",
+    "pre-commit>=4.5.1,<5",
+    "pytest>=9.0.2,<10",
+    "pytest-asyncio>=1.3.0,<2",
+    "pytest-cov>=7.0.0,<8",
+    "pytest-timeout>=2.4.0,<3",
+    "ruff>=0.15,<0.16",
+    "tox>=4.34.1,<5",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.hooks.version]
+path = "pyweatherflowudp/__init__.py"
+pattern = true
+
+[tool.hatch.build.targets.sdist]
+include = ["pyweatherflowudp"]
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { git = { commit = true, tags = true }}]
+
+[tool.uv-dynamic-versioning]
+pattern = "default-unprefixed"

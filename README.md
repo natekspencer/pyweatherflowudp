@@ -1,12 +1,13 @@
-[![PyPI](https://img.shields.io/pypi/v/pyweatherflowudp?style=for-the-badge)](https://pypi.org/project/pyweatherflowudp/)
-[![Python](https://img.shields.io/pypi/pyversions/pyweatherflowudp?style=for-the-badge)](https://pypi.org/project/pyweatherflowudp/)
-[![License](https://img.shields.io/github/license/natekspencer/pyweatherflowudp?style=for-the-badge)](LICENSE)
+# pyweatherflowudp
+
+[![PyPI - Version](https://img.shields.io/pypi/v/pyweatherflowudp?style=for-the-badge)](https://pypi.org/project/pyweatherflowudp/)
 [![Buy Me A Coffee/Beer](https://img.shields.io/badge/Buy_Me_A_☕/🍺-F16061?style=for-the-badge&logo=ko-fi&logoColor=white&labelColor=grey)](https://ko-fi.com/natekspencer)
 [![Sponsor on GitHub](https://img.shields.io/badge/Sponsor_💜-6f42c1?style=for-the-badge&logo=github&logoColor=white&labelColor=grey)](https://github.com/sponsors/natekspencer)
 
-![Downloads](https://img.shields.io/pypi/dm/pyweatherflowudp?style=flat-square)
-
-# pyweatherflowudp
+[![GitHub License](https://img.shields.io/github/license/natekspencer/pyweatherflowudp?style=flat-square)](LICENSE)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyweatherflowudp?style=flat-square)](https://pypi.org/project/pyweatherflowudp/)
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/pyweatherflowudp?style=flat-square)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/pyweatherflowudp?style=flat-square)
 
 An event-based asynchronous library to read UDP packets from Weatherflow weather systems on a local network without any reliance on the cloud.
 
