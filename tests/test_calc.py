@@ -2,17 +2,43 @@
 
 from pyweatherflowudp.calc import (
     alkaline_battery_soc,
-    lto_battery_soc,
+    cloud_base,
+    dew_point_temperature,
     heat_index,
+    lto_battery_soc,
     vapor_pressure,
 )
 from pyweatherflowudp.const import (
     UNIT_DEGREES_CELSIUS,
+    UNIT_METERS,
     UNIT_MILLIBARS,
     UNIT_PERCENT,
     UNIT_VOLTS,
     units,
 )
+
+
+def test_cloud_base() -> None:
+    """Test the cloud base calculations."""
+    temp_degrees = 30 * UNIT_DEGREES_CELSIUS
+    relative_humidity = 0 * UNIT_PERCENT
+    altitude = 1000 * UNIT_METERS
+    assert cloud_base(temp_degrees, relative_humidity, altitude) is None
+
+    relative_humidity = 50 * UNIT_PERCENT
+    cb = cloud_base(temp_degrees, relative_humidity, altitude)
+    assert round(cb, 5) == 2455.72338 * UNIT_METERS
+
+
+def test_dew_point_temperature() -> None:
+    """Test the dew point temperature calculations."""
+    temp_degrees = 30 * UNIT_DEGREES_CELSIUS
+    relative_humidity = 0 * UNIT_PERCENT
+    assert dew_point_temperature(temp_degrees, relative_humidity) is None
+
+    relative_humidity = 50 * UNIT_PERCENT
+    temp = dew_point_temperature(temp_degrees, relative_humidity)
+    assert round(temp, 5) == 18.44664 * UNIT_DEGREES_CELSIUS
 
 
 def test_heat_index() -> None:
