@@ -94,23 +94,22 @@ def cloud_base(
     air_temperature: Quantity[float],
     relative_humidity: Quantity[float],
     altitude: Quantity[float],
-) -> Quantity[float]:
+) -> Quantity[float] | None:
     """Calculate the estimated altitude above mean sea level (AMSL) to the cloud base.
 
     Reference:
         https://holfuy.com/en/support/cloud-base-calculations
     """
-    return (
-        (
+    dew_point_temp = dew_point_temperature(air_temperature, relative_humidity)
+    if dew_point_temp is not None:
+        return (
             (
-                air_temperature.to("degC").m
-                - dew_point_temperature(air_temperature, relative_humidity).to("degC").m
+                (air_temperature.to("degC").m - dew_point_temp.to("degC").m) * 126
+                + altitude.to("m").m
             )
-            * 126
-            + altitude.to("m").m
-        )
-        * UNIT_METERS
-    ).to(altitude.u)
+            * UNIT_METERS
+        ).to(altitude.u)
+    return None
 
 
 def dew_point_temperature(
