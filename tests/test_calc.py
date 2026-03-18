@@ -2,8 +2,9 @@
 
 from pyweatherflowudp.calc import (
     alkaline_battery_soc,
-    lto_battery_soc,
+    dew_point_temperature,
     heat_index,
+    lto_battery_soc,
     vapor_pressure,
 )
 from pyweatherflowudp.const import (
@@ -13,6 +14,17 @@ from pyweatherflowudp.const import (
     UNIT_VOLTS,
     units,
 )
+
+
+def test_dew_point_temperature() -> None:
+    """Test the dew point temperature calculations."""
+    temp_degrees = 30 * UNIT_DEGREES_CELSIUS
+    relative_humidity = 0 * UNIT_PERCENT
+    assert dew_point_temperature(temp_degrees, relative_humidity) is None
+
+    relative_humidity = 50 * UNIT_PERCENT
+    temp = dew_point_temperature(temp_degrees, relative_humidity)
+    assert round(temp, 5) == 18.44664 * UNIT_DEGREES_CELSIUS
 
 
 def test_heat_index() -> None:

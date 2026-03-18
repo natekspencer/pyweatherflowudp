@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 
 import psychrolib
@@ -17,6 +18,8 @@ from .const import (
     UNIT_VOLTS,
     units,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -112,20 +115,24 @@ def cloud_base(
 
 def dew_point_temperature(
     air_temperature: Quantity[float], relative_humidity: Quantity[float]
-) -> Quantity[float]:
+) -> Quantity[float] | None:
     """Calculate the dew point temperature."""
-    return (
-        psychrolib.GetTDewPointFromRelHum(
-            air_temperature.to("degC").m,
-            relative_humidity.m
-            / (
-                100
-                if relative_humidity.u == UNIT_PERCENT or relative_humidity.m > 1
-                else 1
-            ),
-        )
-        * UNIT_DEGREES_CELSIUS
-    ).to(air_temperature.u)
+    try:
+        return (
+            psychrolib.GetTDewPointFromRelHum(
+                air_temperature.to("degC").m,
+                relative_humidity.m
+                / (
+                    100
+                    if relative_humidity.u == UNIT_PERCENT or relative_humidity.m > 1
+                    else 1
+                ),
+            )
+            * UNIT_DEGREES_CELSIUS
+        ).to(air_temperature.u)
+    except ValueError as err:
+        _LOGGER.warning(err)
+        return None
 
 
 def feels_like_temperature(
