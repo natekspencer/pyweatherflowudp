@@ -23,7 +23,7 @@ repository = "https://github.com/natekspencer/pyweatherflowudp"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.19.1,<2",
+    "mypy>=1.19.1,<3",
     "pre-commit>=4.5.1,<5",
     "pytest>=9.0.2,<10",
     "pytest-asyncio>=1.3.0,<2",
