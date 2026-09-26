@@ -79,7 +79,7 @@ def test_air_device(obs_air: dict[str, Any]) -> None:
     assert device.battery == 3.46 * UNIT_VOLTS
     assert device.battery_percent == 100 * UNIT_PERCENT
     assert device.last_report
-    assert device.lightning_strike_average_distance == 0 * UNIT_KILOMETERS
+    assert device.lightning_strike_average_distance is None
     assert device.lightning_strike_count == 0
     assert device.relative_humidity == 45 * UNIT_PERCENT
     assert device.report_interval == 1 * UNIT_MINUTES
@@ -116,6 +116,18 @@ def test_sky_device(obs_sky: dict[str, Any]) -> None:
     assert device.wind_gust == 7.4 * UNIT_METERS_PER_SECOND
     assert device.wind_lull == 2.6 * UNIT_METERS_PER_SECOND
     assert device.wind_sample_interval == 3 * UNIT_SECONDS
+
+
+def test_lightning_strike_average_distance_with_strikes(
+    device_status: dict[str, Any], obs_st: dict[str, Any]
+) -> None:
+    """Test the average distance is reported when strikes were detected."""
+    device = TempestDevice(serial_number=TEMPEST_SERIAL_NUMBER, data=device_status)
+    obs_st["obs"][0][14] = 12  # lightning strike average distance
+    obs_st["obs"][0][15] = 3  # lightning strike count
+    device.parse_message(obs_st)
+    assert device.lightning_strike_average_distance == 12 * UNIT_KILOMETERS
+    assert device.lightning_strike_count == 3
 
 
 def test_tempest_device(
@@ -174,7 +186,7 @@ def test_tempest_device(
     assert device.battery == 2.410 * UNIT_VOLTS
     assert device.battery_percent == 81 * UNIT_PERCENT
     assert device.illuminance == 328 * UNIT_LUX
-    assert device.lightning_strike_average_distance == 0 * UNIT_KILOMETERS
+    assert device.lightning_strike_average_distance is None
     assert device.lightning_strike_count == 0
     assert device.power_save_mode == PowerSaveMode.MODE_1
     assert device.precipitation_type == PrecipitationType.NONE
