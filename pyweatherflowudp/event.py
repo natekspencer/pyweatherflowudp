@@ -13,6 +13,9 @@ from .helpers import nvl, utc_timestamp_from_epoch
 # The lightning sensor reports this distance when the storm is out of range.
 DISTANCE_OUT_OF_RANGE = 63
 
+# Some Tempest firmware versions set this bit in the strike energy by mistake.
+ENERGY_FIRMWARE_BUG_BIT = 1 << 24
+
 # pylint: disable=line-too-long
 
 
@@ -59,9 +62,10 @@ class LightningStrikeEvent(Event):
     def energy(self) -> int:
         """Return the energy.
 
-        Energy is just a pure number and has no physical meaning.
+        Energy is just a pure number and has no physical meaning. Bit 24, which
+        some Tempest firmware versions set by mistake, is cleared.
         """
-        return nvl(self._energy, 0)
+        return nvl(self._energy, 0) & ~ENERGY_FIRMWARE_BUG_BIT
 
     def __repr__(self) -> str:  # pragma: no cover
         """Return repr(self)."""
