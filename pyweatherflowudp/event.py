@@ -10,6 +10,9 @@ from pint import Quantity
 from .const import UNIT_DEGREES, UNIT_KILOMETERS, UNIT_METERS_PER_SECOND
 from .helpers import nvl, utc_timestamp_from_epoch
 
+# The lightning sensor reports this distance when the storm is out of range.
+DISTANCE_OUT_OF_RANGE = 63
+
 # pylint: disable=line-too-long
 
 
@@ -42,8 +45,14 @@ class LightningStrikeEvent(Event):
     _energy: int | None
 
     @property
-    def distance(self) -> Quantity[float]:
-        """Return the distance in kilometers."""
+    def distance(self) -> Quantity[float] | None:
+        """Return the estimated distance in kilometers, or None if out of range.
+
+        The sensor estimates the distance to the leading edge of the storm from
+        the recent strikes, not the distance to this individual strike.
+        """
+        if self._distance == DISTANCE_OUT_OF_RANGE:
+            return None
         return nvl(self._distance, 0) * UNIT_KILOMETERS
 
     @property

@@ -114,7 +114,12 @@ class AirSensorMixin(BaseSensorMixin):
 
     @property
     def lightning_strike_average_distance(self) -> Quantity[float] | None:
-        """Return the lightning strike average distance in kilometers (km)."""
+        """Return the lightning strike average distance in kilometers (km).
+
+        None if no strikes were detected, for which the device reports 0.
+        """
+        if not self._lightning_strike_count:
+            return None
         return value_as_unit(self._lightning_strike_average_distance, UNIT_KILOMETERS)
 
     @property
