@@ -354,3 +354,14 @@ def test_deprecated_properties(
         "The parameter 'height' has been renamed to `altitude` to reduce ambiguity."
         in caplog.text
     )
+
+
+def test_lightning_strike_energy_firmware_bug_bit(
+    device_status: dict[str, Any], evt_strike: dict[str, Any]
+) -> None:
+    """Test the firmware bug bit 24 is cleared from the strike energy."""
+    device = TempestDevice(serial_number=TEMPEST_SERIAL_NUMBER, data=device_status)
+    evt_strike["evt"][2] = (1 << 24) + 72698
+    device.parse_message(evt_strike)
+    assert device.last_lightning_strike_event
+    assert device.last_lightning_strike_event.energy == 72698
