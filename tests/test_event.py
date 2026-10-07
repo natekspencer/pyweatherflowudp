@@ -1,6 +1,6 @@
 """Test the module version."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pyweatherflowudp.const import UNIT_KILOMETERS
 from pyweatherflowudp.event import CustomEvent, LightningStrikeEvent
@@ -8,10 +8,10 @@ from pyweatherflowudp.event import CustomEvent, LightningStrikeEvent
 
 def test_custom_event() -> None:
     """Test custom event."""
-    timestamp = datetime.now(timezone.utc).timestamp()
+    timestamp = datetime.now(UTC).timestamp()
     event = CustomEvent(timestamp, "Test")
     assert event.epoch == timestamp
-    assert event.timestamp == datetime.fromtimestamp(timestamp, timezone.utc)
+    assert event.timestamp == datetime.fromtimestamp(timestamp, UTC)
     assert event.name == "Test"
 
 

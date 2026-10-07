@@ -6,9 +6,7 @@ import asyncio
 import errno
 import json
 import logging
-from typing import Any
-
-from typing_extensions import Self
+from typing import Any, Self
 
 from .aioudp import LocalEndpoint, open_local_endpoint
 from .const import DEFAULT_HOST, DEFAULT_PORT

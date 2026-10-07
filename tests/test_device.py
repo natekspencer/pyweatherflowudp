@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from _pytest.logging import LogCaptureFixture
@@ -57,14 +57,14 @@ def test_hub_device(hub_status: dict[str, Any]) -> None:
     assert device.load_complete
     assert device.rssi == -62 * UNIT_DECIBELS
     assert device.firmware_revision == "35"
-    assert device.timestamp == datetime.fromtimestamp(1495724691, timezone.utc)
-    assert device.up_since == datetime.fromtimestamp(1495724691 - 1670133, timezone.utc)
+    assert device.timestamp == datetime.fromtimestamp(1495724691, UTC)
+    assert device.up_since == datetime.fromtimestamp(1495724691 - 1670133, UTC)
     assert device.uptime == 1670133 * UNIT_SECONDS
     assert device.reset_flags == ["Brownout reset", "PIN reset", "Power reset"]
 
     hub_status.update({"timestamp": 1495725691})
     device.parse_message(hub_status)
-    assert device.timestamp == datetime.fromtimestamp(1495725691, timezone.utc)
+    assert device.timestamp == datetime.fromtimestamp(1495725691, UTC)
 
 
 def test_air_device(obs_air: dict[str, Any]) -> None:
@@ -161,7 +161,7 @@ def test_tempest_device(
 
     # check up_since field
     original_up_since = datetime.fromtimestamp(
-        device_status["timestamp"] - device_status["uptime"], timezone.utc
+        device_status["timestamp"] - device_status["uptime"], UTC
     )
     assert device.up_since == original_up_since
     device_status.update({"uptime": device_status["uptime"] + 59})
@@ -274,7 +274,7 @@ def test_tempest_device_low_voltage(
     assert device.sensor_status == ["Lightning Disturber"]
 
     device.parse_message(obs_st_low_voltage)
-    assert device.last_report == datetime.fromtimestamp(1639766824, timezone.utc)
+    assert device.last_report == datetime.fromtimestamp(1639766824, UTC)
     assert device.wind_lull is None
     assert device.wind_average is None
     assert device.wind_gust is None
@@ -290,7 +290,7 @@ def test_tempest_null_values(obs_st_nulls: dict[str, Any]) -> None:
     """Test handling of all null values."""
     device = TempestDevice(serial_number=TEMPEST_SERIAL_NUMBER, data=obs_st_nulls)
     device.parse_message(obs_st_nulls)
-    assert device.last_report == datetime.fromtimestamp(1640083867, timezone.utc)
+    assert device.last_report == datetime.fromtimestamp(1640083867, UTC)
     assert device.wind_lull is None
     assert device.wind_average is None
     assert device.wind_gust is None
