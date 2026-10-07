@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, TypeVar, cast
 
 from pint import Quantity, Unit
@@ -27,7 +27,6 @@ DIRECTIONS = [
 ]
 DIRECTIONS_COUNT = len(DIRECTIONS)
 T = TypeVar("T")  # pylint: disable=invalid-name
-UTC = timezone.utc
 
 
 def degrees_to_cardinal(degree: float | Quantity[float]) -> str:
